@@ -1,0 +1,24 @@
+
+main:
+  allow-circular-references: true
+
+server:
+  servlet:
+    context-path: /users
+spring:
+  application:
+    name: BOOTCAMP-PR-USUARIOS
+  datasource:
+    url: jdbc:h2:./users
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /console
