@@ -33,4 +33,17 @@ export class UsersComponent {
     console.log(error)
   }
 
+
+  
+  editarUsuario(user: User): void {
+  console.log('Editar usuario:', user);
+  // Aquí va la lógica para abrir un formulario, modal, etc.
+}
+
+borrarUsuario(id: number): void {
+  console.log('Borrar usuario con ID:', id);
+  // Aquí va la lógica para eliminar
+}
+
+
 }

@@ -1,5 +1,29 @@
-<h1>Lista de Usuarios</h1>
+<h1 class="mb-4">Lista de Usuarios</h1>
 
-<div *ngFor="let user of users">
-  <p>{{ user.id }} - {{ user.nombre }} - {{ user.email }}</p>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th class="text-center">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.nombre }}</td>
+        <td>{{ user.email }}</td>
+        <td class="text-center">
+          <button class="btn btn-sm btn-primary me-2" (click)="editarUsuario(user)">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="borrarUsuario(user.id!)">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
