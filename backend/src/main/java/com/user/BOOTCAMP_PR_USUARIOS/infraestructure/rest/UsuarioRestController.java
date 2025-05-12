@@ -4,10 +4,7 @@ import com.user.BOOTCAMP_PR_USUARIOS.application.dto.UsuarioDTO;
 import com.user.BOOTCAMP_PR_USUARIOS.application.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,12 +17,13 @@ public class UsuarioRestController {
         this.usuarioService = usuarioService;
     }
 
+    @CrossOrigin
     @GetMapping(value = "/usuarios", produces = "application/json")
     ResponseEntity<List<UsuarioDTO>>getAllUsuarios(){
         List<UsuarioDTO> usuarios = usuarioService.getAllUsuarios();
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
-
+    @CrossOrigin
     @PostMapping(value = "/usuarios", produces = "application/json", consumes = "application/json")
     ResponseEntity<UsuarioDTO>insertUsuario(@RequestBody UsuarioDTO usuarioDTO){
         usuarioDTO = usuarioService.saveUsuario(usuarioDTO);
