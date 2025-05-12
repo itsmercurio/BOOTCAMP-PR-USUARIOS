@@ -11,5 +11,5 @@ import { FooterComponent } from "./layouts/footer/footer.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'backoffice-store';
+  title = 'backoffice-users';
 }
