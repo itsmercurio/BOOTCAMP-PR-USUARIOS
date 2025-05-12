@@ -24,7 +24,7 @@ public class Usuario {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private String rol;
+    private Rol rol;
 
     public Usuario() {
     }
@@ -61,11 +61,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 }
