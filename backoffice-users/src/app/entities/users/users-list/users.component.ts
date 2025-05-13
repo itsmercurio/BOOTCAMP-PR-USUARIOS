@@ -52,29 +52,44 @@ translateRol(rol: string): string {
 
 
 borrarUsuario(id: number): void {
-    this.userService.deleteUser(id).subscribe({
-      next: () => {
-        console.log('Usuario eliminado correctamente');
-        Swal.fire({
-          icon: 'success',
-          title: '¡Usuario eliminado!',
-          text: 'El usuario ha sido eliminado correctamente.',
-          confirmButtonText: 'Aceptar'
-        }).then(()=>{
-          this.getUsers();
-        });
-      },
-      error: (err) => {
-        console.error(err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Hubo un problema al eliminar el usuario.',
-          confirmButtonText: 'Aceptar'
-        });
-      }
-    });
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: '¡Este usuario será eliminado permanentemente!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Aceptar',
+    cancelButtonText: 'Cancelar',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.userService.deleteUser(id).subscribe({
+        next: () => {
+          console.log('Usuario eliminado correctamente');
+          Swal.fire({
+            icon: 'success',
+            title: '¡Usuario eliminado!',
+            text: 'El usuario ha sido eliminado correctamente.',
+            confirmButtonText: 'Aceptar'
+          }).then(() => {
+            this.getUsers();
+          });
+        },
+        error: (err) => {
+          console.error(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al eliminar el usuario.',
+            confirmButtonText: 'Aceptar'
+          });
+        }
+      });
+    } else {
+      console.log('Eliminación de usuario cancelada');
+    }
+  });
 }
+
 
 
 

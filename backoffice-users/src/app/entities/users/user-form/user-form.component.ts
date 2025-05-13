@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { User } from '../model/user.model';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-form',
@@ -48,13 +49,24 @@ export class UserFormComponent {
     }
   }
 
-  cancelar() {
-    const confirmCancel = window.confirm('¿Estás seguro de que deseas cancelar? Los cambios se perderán.');
-    
-    if (confirmCancel) {
+  cancelar(): void {
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'Los cambios se perderán.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Descartar Cambios',
+    cancelButtonText: 'Seguir Editando',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
       this.router.navigate(['/users']);
+    } else {
+      console.log('Cancelación abortada');
     }
-  }
+  });
+}
+
 
 translateRol(rol: string): string {
     switch (rol) {

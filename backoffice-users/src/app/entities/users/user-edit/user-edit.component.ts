@@ -4,6 +4,7 @@ import { User } from '../model/user.model';
 import { UserService } from '../service/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -53,11 +54,23 @@ export class UserEditComponent implements OnInit {
 
   
   cancelar(): void {
-    const confirmCancel = confirm('¿Estás seguro de que deseas cancelar? Los cambios se perderán.');
-    if (confirmCancel) {
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'Los cambios se perderán.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Descartar Cambios',
+    cancelButtonText: 'Seguir Editando',
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
       this.router.navigate(['/users']);
+    } else {
+      console.log('Cancelación abortada');
     }
-  }
+  });
+}
+
 
   translateRol(rol: string): string {
     switch (rol) {
