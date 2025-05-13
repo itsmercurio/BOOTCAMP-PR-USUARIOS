@@ -43,8 +43,15 @@ public class UsuarioRestController {
     @CrossOrigin
     @PutMapping(value = "/usuarios/{id}", produces = "application/json", consumes = "application/json")
     public ResponseEntity<UsuarioDTO> updateUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
-        usuarioDTO.setId(id); // Asegúrate de establecer el ID en el DTO recibido
+        usuarioDTO.setId(id);
         UsuarioDTO updatedUsuario = usuarioService.updateUsuario(usuarioDTO);
         return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/usuarios/{id}")
+    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
+        usuarioService.deleteUsuario(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

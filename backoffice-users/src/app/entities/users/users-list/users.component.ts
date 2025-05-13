@@ -4,6 +4,7 @@ import { UserService } from '../service/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
@@ -49,10 +50,32 @@ translateRol(rol: string): string {
     this.router.navigate(['/users/edit', user.id]);
   }
 
-  borrarUsuario(id: number): void {
-    console.log('Borrar usuario con ID:', id);
-    // Aquí va la lógica para eliminar
-  }
+
+borrarUsuario(id: number): void {
+    this.userService.deleteUser(id).subscribe({
+      next: () => {
+        console.log('Usuario eliminado correctamente');
+        Swal.fire({
+          icon: 'success',
+          title: '¡Usuario eliminado!',
+          text: 'El usuario ha sido eliminado correctamente.',
+          confirmButtonText: 'Aceptar'
+        }).then(()=>{
+          this.getUsers();
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al eliminar el usuario.',
+          confirmButtonText: 'Aceptar'
+        });
+      }
+    });
+}
+
 
 
 }

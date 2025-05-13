@@ -34,4 +34,9 @@ export class UserService {
     const urlEndpoint = `http://localhost:8080/users/api/usuarios/${id}`;
     return this.http.put<User>(urlEndpoint, user);
   }
+
+  public deleteUser(id: number): Observable<void>{
+    const urlEndpoint = `http://localhost:8080/users/api/usuarios/${id}`;
+    return this.http.delete<void>(urlEndpoint);
+  }
 }
