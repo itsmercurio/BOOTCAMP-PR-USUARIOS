@@ -15,6 +15,10 @@ export class UserService {
     const urlEndpoint: string = "http://localhost:8080/users/api/usuarios";
     return this.http.get<User[]>(urlEndpoint);
   }
+  public getUserById(id: number): Observable<User> {
+  const urlEndpoint = `http://localhost:8080/users/api/usuarios/${id}`;
+  return this.http.get<User>(urlEndpoint);
+}
 
   public getRoles(): Observable<string[]> {
     const urlEndpoint: string = "http://localhost:8080/users/api/roles";
@@ -24,5 +28,10 @@ export class UserService {
   public createUser(user: any): Observable<any>{
     const urlEndpoint: string = "http://localhost:8080/users/api/usuarios";
     return this.http.post<any>(urlEndpoint,user);
+  }
+
+  updateUser(id: number, user: User): Observable<User> {
+    const urlEndpoint = `http://localhost:8080/users/api/usuarios/${id}`;
+    return this.http.put<User>(urlEndpoint, user);
   }
 }

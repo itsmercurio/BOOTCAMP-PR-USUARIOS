@@ -1,1 +1,34 @@
-<p>El user es {{userId}}</p>
+<div class="container mt-5">
+    <h2 class="mb-4">Formulario de Edición de Usuario</h2>
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" [(ngModel)]="user.nombre" name="nombre"
+                placeholder="Introduce tu nombre" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="apellidos" class="form-label">Apellidos</label>
+            <input type="text" class="form-control" id="apellidos" [(ngModel)]="user.apellidos" name="apellidos"
+                placeholder="Introduce tus apellidos" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email"
+                placeholder="Introduce tu correo electrónico" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="rol" class="form-label">Rol</label>
+            <select class="form-select" id="rol" [(ngModel)]="user.rol" name="rol" required>
+                <option value="" disabled selected>Selecciona tu rol</option>
+                <option *ngFor="let rol of roles" [value]="rol">{{ translateRol(rol) }}</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary me-3" [disabled]="!isFormValid">Guardar</button>
+        <button type="button" class="btn btn-secondary ms-3" (click)="cancelar()">Cancelar</button>
+    </form>
+</div>
