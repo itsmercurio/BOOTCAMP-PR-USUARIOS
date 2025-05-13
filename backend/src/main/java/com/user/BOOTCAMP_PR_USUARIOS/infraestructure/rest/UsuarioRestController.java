@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class UsuarioRestController {
 
     private UsuarioService usuarioService;
@@ -28,5 +29,22 @@ public class UsuarioRestController {
     ResponseEntity<UsuarioDTO>insertUsuario(@RequestBody UsuarioDTO usuarioDTO){
         usuarioDTO = usuarioService.saveUsuario(usuarioDTO);
         return new ResponseEntity<>(usuarioDTO,HttpStatus.CREATED);
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/usuarios/{id}", produces = "application/json")
+    public ResponseEntity<UsuarioDTO> getUsuarioById(@PathVariable Long id) {
+        return usuarioService.getUsuarioById(id)
+                .map(usuarioDTO -> new ResponseEntity<>(usuarioDTO, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+
+    @CrossOrigin
+    @PutMapping(value = "/usuarios/{id}", produces = "application/json", consumes = "application/json")
+    public ResponseEntity<UsuarioDTO> updateUsuario(@PathVariable Long id, @RequestBody UsuarioDTO usuarioDTO) {
+        usuarioDTO.setId(id); // Asegúrate de establecer el ID en el DTO recibido
+        UsuarioDTO updatedUsuario = usuarioService.updateUsuario(usuarioDTO);
+        return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
     }
 }

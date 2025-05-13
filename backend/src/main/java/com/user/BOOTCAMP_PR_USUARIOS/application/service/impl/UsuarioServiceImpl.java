@@ -44,4 +44,16 @@ public class UsuarioServiceImpl implements UsuarioService {
         persistence.deleteUsuario(idUsuario);
 
     }
+
+    @Override
+    public UsuarioDTO updateUsuario(UsuarioDTO usuarioDTO) {
+        Optional<Usuario> existing = persistence.getUsuarioById(usuarioDTO.getId());
+
+        if (existing.isEmpty()) {
+            throw new RuntimeException("Usuario no encontrado con ID: " + usuarioDTO.getId());
+        }
+
+        Usuario updated = persistence.saveUsuario(mapper.toEntity(usuarioDTO));
+        return mapper.toDto(updated);
+    }
 }
