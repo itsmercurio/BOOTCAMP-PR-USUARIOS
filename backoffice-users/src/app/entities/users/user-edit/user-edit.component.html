@@ -2,8 +2,7 @@
   <h2 class="mb-4">Formulario de Edición de Usuario</h2>
 
   <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
-    
-    <!-- NOMBRE -->
+
     <div class="mb-3">
       <label for="nombre" class="form-label">Nombre</label>
       <input
@@ -14,14 +13,22 @@
         placeholder="Introduce tu nombre"
         [class.is-invalid]="nombre?.invalid && (nombre?.touched || nombre?.dirty)"
       />
-      <div *ngIf="nombre?.invalid && (nombre?.touched || nombre?.dirty)" class="text-danger">
-        <small *ngIf="nombre?.errors?.['required']">El nombre es obligatorio.</small>
-        <small *ngIf="nombre?.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
-        <small *ngIf="nombre?.errors?.['pattern']">Solo se permiten letras y espacios.</small>
-      </div>
+      @if (nombre?.invalid && (nombre?.touched || nombre?.dirty)) {
+        <div class="text-danger">
+          @if (nombre?.errors?.['required']) {
+            <small>El nombre es obligatorio.</small>
+          }
+          @else if (nombre?.errors?.['minlength']) {
+            <small>Debe tener al menos 2 caracteres.</small>
+          }
+          @else if (nombre?.errors?.['pattern']) {
+            <small>Solo se permiten letras y espacios.</small>
+          }
+        </div>
+      }
     </div>
 
-    <!-- APELLIDOS -->
+
     <div class="mb-3">
       <label for="apellidos" class="form-label">Apellidos</label>
       <input
@@ -32,14 +39,22 @@
         placeholder="Introduce tus apellidos"
         [class.is-invalid]="apellidos?.invalid && (apellidos?.touched || apellidos?.dirty)"
       />
-      <div *ngIf="apellidos?.invalid && (apellidos?.touched || apellidos?.dirty)" class="text-danger">
-        <small *ngIf="apellidos?.errors?.['required']">Los apellidos son obligatorios.</small>
-        <small *ngIf="apellidos?.errors?.['minlength']">Debe tener al menos 2 caracteres.</small>
-        <small *ngIf="apellidos?.errors?.['pattern']">Solo se permiten letras y espacios.</small>
-      </div>
+      @if (apellidos?.invalid && (apellidos?.touched || apellidos?.dirty)) {
+        <div class="text-danger">
+          @if (apellidos?.errors?.['required']) {
+            <small>Los apellidos son obligatorios.</small>
+          }
+          @else if (apellidos?.errors?.['minlength']) {
+            <small>Debe tener al menos 2 caracteres.</small>
+          }
+          @else if (apellidos?.errors?.['pattern']) {
+            <small>Solo se permiten letras y espacios.</small>
+          }
+        </div>
+      }
     </div>
 
-    <!-- EMAIL -->
+
     <div class="mb-3">
       <label for="email" class="form-label">Correo Electrónico</label>
       <input
@@ -50,13 +65,19 @@
         placeholder="Introduce tu correo electrónico"
         [class.is-invalid]="email?.invalid && (email?.touched || email?.dirty)"
       />
-      <div *ngIf="email?.invalid && (email?.touched || email?.dirty)" class="text-danger">
-        <small *ngIf="email?.errors?.['required']">El correo es obligatorio.</small>
-        <small *ngIf="email?.errors?.['email']">Debe ser un correo válido.</small>
-      </div>
+      @if (email?.invalid && (email?.touched || email?.dirty)) {
+        <div class="text-danger">
+          @if (email?.errors?.['required']) {
+            <small>El correo es obligatorio.</small>
+          }
+          @else if (email?.errors?.['email']) {
+            <small>Debe ser un correo válido.</small>
+          }
+        </div>
+      }
     </div>
 
-    <!-- ROL -->
+
     <div class="mb-3">
       <label for="rol" class="form-label">Rol</label>
       <select
@@ -68,12 +89,16 @@
         <option value="" disabled>Selecciona tu rol</option>
         <option *ngFor="let r of roles" [value]="r">{{ translateRol(r) }}</option>
       </select>
-      <div *ngIf="rol?.invalid && (rol?.touched || rol?.dirty)" class="text-danger">
-        <small *ngIf="rol?.errors?.['required']">El rol es obligatorio.</small>
-      </div>
+      @if (rol?.invalid && (rol?.touched || rol?.dirty)) {
+        <div class="text-danger">
+          @if (rol?.errors?.['required']) {
+            <small>El rol es obligatorio.</small>
+          }
+        </div>
+      }
     </div>
 
-    <!-- BOTONES -->
+  
     <button type="submit" class="btn btn-primary me-3" [disabled]="editForm.invalid">
       Guardar
     </button>

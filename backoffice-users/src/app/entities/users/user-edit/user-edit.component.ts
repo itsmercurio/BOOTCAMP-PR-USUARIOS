@@ -35,7 +35,6 @@ export class UserEditComponent implements OnInit {
       rol: ['', Validators.required]
     });
 
-    // Obtener roles desde el servicio
     this.userService.getRoles().subscribe({
       next: roles => this.roles = roles,
       error: err => console.error('Error al obtener roles', err)
