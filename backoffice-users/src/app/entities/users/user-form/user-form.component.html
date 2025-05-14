@@ -1,39 +1,51 @@
 <div class="container mt-5">
-    <h2 class="mb-4">Formulario de Registro</h2>
-    <form (ngSubmit)="onSubmit()" #form="ngForm">
+  <h2 class="mb-4">Formulario de Registro</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
 
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" [(ngModel)]="user.nombre" name="nombre"
-                placeholder="Introduce tu nombre" required>
-        </div>
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input type="text" id="nombre" formControlName="nombre" class="form-control" placeholder="Introduce tu nombre" />
+      <div class="text-danger" *ngIf="nombre?.touched && nombre?.invalid">
+        <small *ngIf="nombre?.errors?.['required']">El nombre es obligatorio.</small>
+        <small *ngIf="nombre?.errors?.['minlength']">Debe tener al menos 3 caracteres.</small>
+        <small *ngIf="nombre?.errors?.['maxlength']">Debe tener como máximo 30 caracteres.</small>
+        <small *ngIf="nombre?.errors?.['pattern']">Debe tener solo letras y espacios caracteres.</small>
+      </div>
+    </div>
 
+    <div class="mb-3">
+      <label for="apellidos" class="form-label">Apellidos</label>
+      <input type="text" id="apellidos" formControlName="apellidos" class="form-control" placeholder="Introduce tus apellidos" />
+      <div class="text-danger" *ngIf="apellidos?.touched && apellidos?.invalid">
+        <small *ngIf="apellidos?.errors?.['required']">Los apellidos son obligatorios.</small>
+        <small *ngIf="apellidos?.errors?.['minlength']">Debe tener al menos 3 caracteres.</small>
+        <small *ngIf="apellidos?.errors?.['maxlength']">Debe tener como máximo 40 caracteres.</small>
+        <small *ngIf="nombre?.errors?.['pattern']">Debe tener solo letras y espacios caracteres.</small>
+      </div>
+    </div>
 
-        <div class="mb-3">
-            <label for="apellidos" class="form-label">Apellidos</label>
-            <input type="text" class="form-control" id="apellidos" [(ngModel)]="user.apellidos" name="apellidos"
-                placeholder="Introduce tus apellidos" required>
-        </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Correo Electrónico</label>
+      <input type="email" id="email" formControlName="email" class="form-control" placeholder="Introduce tu correo" />
+      <div class="text-danger" *ngIf="email?.touched && email?.invalid">
+        <small *ngIf="email?.errors?.['required']">El correo es obligatorio.</small>
+        <small *ngIf="email?.errors?.['email']">Debe ser un correo válido.</small>
+      </div>
+    </div>
 
+    <div class="mb-3">
+      <label for="rol" class="form-label">Rol</label>
+      <select id="rol" formControlName="rol" class="form-select">
+        <option value="" disabled>Selecciona tu rol</option>
+        <option *ngFor="let rol of roles" [value]="rol">{{ translateRol(rol) }}</option>
+      </select>
+      <div class="text-danger" *ngIf="rol?.touched && rol?.invalid">
+        <small>El rol es obligatorio.</small>
+      </div>
+    </div>
 
-        <div class="mb-3">
-            <label for="email" class="form-label">Correo Electrónico</label>
-            <input type="email" class="form-control" id="email" [(ngModel)]="user.email" name="email"
-                placeholder="Introduce tu correo electrónico" required>
-        </div>
-
-
-        <div class="mb-3">
-            <label for="rol" class="form-label">Rol</label>
-            <select class="form-select" id="rol" [(ngModel)]="user.rol" name="rol" required>
-                <option value="" disabled selected>Selecciona tu rol</option>
-                <option *ngFor="let rol of roles" [value]="rol">{{ translateRol(rol) }}</option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary me-3" [disabled]="!isFormValid">Guardar</button>
-
-        <button type="button" class="btn btn-secondary ms-3" (click)="cancelar()">Cancelar</button>
-    </form>
+    <button type="submit" class="btn btn-primary me-3" [disabled]="form.invalid">Guardar</button>
+    <button type="button" class="btn btn-secondary ms-3" (click)="cancelar()">Cancelar</button>
+  </form>
 </div>

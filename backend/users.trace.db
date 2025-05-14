@@ -590,3 +590,11 @@ org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "ALT
 Syntax error in SQL statement "ALTER TABLE usuarios\000d\000a[*]CHANGE COLUMN rol rol ENUM('ADMIN', 'GUEST', 'USER', 'CONTRIBUTOR', 'ADMINISTRADOR')"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
 ALTER TABLE usuarios
 CHANGE COLUMN rol rol ENUM('ADMIN', 'GUEST', 'USER', 'CONTRIBUTOR', 'ADMINISTRADOR') [42001-232]
+2025-05-14 10:55:04.221643+02:00 jdbc[53]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "APELLIDOS CHARACTER VARYING(200)": "'sed ornare quam. Suspendisse venenatis neque et mi elementum, ac feugiat lacus ... (4665)"
+Value too long for column "APELLIDOS CHARACTER VARYING(200)": "'sed ornare quam. Suspendisse venenatis neque et mi elementum, ac feugiat lacus ... (4665)"; SQL statement:
+insert into usuarios (apellidos,email,nombre,rol,id) values (?,?,?,?,?) [22001-232]
+2025-05-14 10:55:17.996788+02:00 jdbc[53]: exception
+org.h2.jdbc.JdbcSQLDataException: Valor demasiado largo para la columna "APELLIDOS CHARACTER VARYING(200)": "'e arcu.purus nibh, vitae porttitor lacus sagittis sit amet. Donec eget erat ut ... (1047)"
+Value too long for column "APELLIDOS CHARACTER VARYING(200)": "'e arcu.purus nibh, vitae porttitor lacus sagittis sit amet. Donec eget erat ut ... (1047)"; SQL statement:
+insert into usuarios (apellidos,email,nombre,rol,id) values (?,?,?,?,?) [22001-232]
