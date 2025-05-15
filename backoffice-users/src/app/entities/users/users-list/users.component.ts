@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../model/user.model';
 import { UserService } from '../service/user.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -16,15 +16,18 @@ import { FormsModule } from '@angular/forms';
 })
 export class UsersComponent {
   users: User[] = [];
-  filteredUsers: User[] = [];
-
   filtro = {
     nombre: '',
     apellidos: '',
     rol: ''
   };
-
   mostrarFiltros = false;
+
+
+  currentPage: number = 0;
+  pageSize: number = 10;
+  totalPages: number = 0;
+  totalItems: number = 0;
 
   constructor(private userService: UserService, private router: Router) {}
 
@@ -32,11 +35,19 @@ export class UsersComponent {
     this.getUsers();
   }
 
-  private getUsers(): void {
-    this.userService.getUsers().subscribe({
-      next: (usersRequest) => {
-        this.users = usersRequest;
-        this.filteredUsers = [...this.users];
+  getUsers(page: number = 0): void {
+    this.currentPage = page;
+    this.userService.getUsers(
+      this.filtro.nombre,
+      this.filtro.apellidos,
+      this.filtro.rol,
+      this.currentPage,
+      this.pageSize
+    ).subscribe({
+      next: (response) => {
+        this.users = response.usuarios;
+        this.totalPages = response.totalPages;
+        this.totalItems = response.totalItems;
       },
       error: (err) => {
         this.handleError(err);
@@ -45,18 +56,18 @@ export class UsersComponent {
   }
 
   filtrar(): void {
-    const { nombre, apellidos, rol } = this.filtro;
-    this.filteredUsers = this.users.filter(user => {
-      const nombreMatch = !nombre || user.nombre?.toLowerCase().includes(nombre.toLowerCase());
-      const apellidosMatch = !apellidos || user.apellidos?.toLowerCase().includes(apellidos.toLowerCase());
-      const rolMatch = !rol || user.rol?.toLowerCase().includes(rol.toLowerCase());
-      return nombreMatch && apellidosMatch && rolMatch;
-    });
+    this.getUsers(0);
   }
 
   restaurar(): void {
     this.filtro = { nombre: '', apellidos: '', rol: '' };
-    this.filteredUsers = [...this.users];
+    this.getUsers(0);
+  }
+
+  cambiarPagina(nuevaPagina: number): void {
+    if (nuevaPagina >= 0 && nuevaPagina < this.totalPages) {
+      this.getUsers(nuevaPagina);
+    }
   }
 
   translateRol(rol: string): string {
@@ -93,7 +104,7 @@ export class UsersComponent {
               text: 'El usuario ha sido eliminado correctamente.',
               confirmButtonText: 'Aceptar'
             }).then(() => {
-              this.getUsers();
+              this.getUsers(this.currentPage);
             });
           },
           error: (err) => {

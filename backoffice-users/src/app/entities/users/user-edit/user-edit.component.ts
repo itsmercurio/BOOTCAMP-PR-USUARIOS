@@ -27,7 +27,6 @@ export class UserEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Inicializar formulario
     this.editForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/)]],
       apellidos: ['', [Validators.required, Validators.minLength(2),Validators.pattern(/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/)]],
@@ -40,7 +39,6 @@ export class UserEditComponent implements OnInit {
       error: err => console.error('Error al obtener roles', err)
     });
 
-    // Cargar datos del usuario
     this.route.paramMap.subscribe(params => {
       this.userId = +params.get('id')!;
       this.getUserById();
@@ -50,7 +48,7 @@ export class UserEditComponent implements OnInit {
   getUserById(): void {
     this.userService.getUserById(this.userId).subscribe({
       next: (user: User) => {
-        this.editForm.patchValue(user); // Carga los datos en el formulario
+        this.editForm.patchValue(user);
       },
       error: err => console.error('Error al cargar el usuario', err)
     });
@@ -96,7 +94,7 @@ export class UserEditComponent implements OnInit {
     }
   }
 
-  // Getters para fácil acceso desde el template
+
   get nombre() { return this.editForm.get('nombre'); }
   get apellidos() { return this.editForm.get('apellidos'); }
   get email() { return this.editForm.get('email'); }

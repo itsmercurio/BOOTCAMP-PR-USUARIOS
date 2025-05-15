@@ -40,7 +40,7 @@
   </div>
 }
 
-@if (filteredUsers.length === 0) {
+@if (users.length === 0) {
   <div class="alert alert-warning mx-5">
     No se encontraron resultados.
   </div>
@@ -58,7 +58,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (user of filteredUsers; track user.id) {
+        @for (user of users; track user.id) {
           <tr class="hover-row">
             <td>{{ user.id }}</td>
             <td>{{ user.nombre }}</td>
@@ -84,4 +84,5 @@
       </tbody>
     </table>
   </div>
+  
 }

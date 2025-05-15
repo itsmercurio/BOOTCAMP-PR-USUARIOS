@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../model/user.model';
@@ -11,10 +11,25 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  public getUsers():Observable<User[]>{
+  public getUsers(
+    nombre?: string,
+    apellidos?: string,
+    rol?: string,
+    page: number = 0,
+    size: number = 10
+  ): Observable<any> {
     const urlEndpoint: string = "http://localhost:8080/users/api/usuarios";
-    return this.http.get<User[]>(urlEndpoint);
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (nombre) params = params.set('nombre', nombre);
+    if (apellidos) params = params.set('apellidos', apellidos);
+    if (rol) params = params.set('rol', rol);
+
+    return this.http.get<any>(urlEndpoint, { params });
   }
+  
   public getUserById(id: number): Observable<User> {
   const urlEndpoint = `http://localhost:8080/users/api/usuarios/${id}`;
   return this.http.get<User>(urlEndpoint);
@@ -39,4 +54,15 @@ export class UserService {
     const urlEndpoint = `http://localhost:8080/users/api/usuarios/${id}`;
     return this.http.delete<void>(urlEndpoint);
   }
+
+   public getFilteredUsers(nombre: string, apellidos: string, rol: string): Observable<User[]> {
+  const urlEndpoint = "http://localhost:8080/users/api/usuarios";
+  const params = {
+    nombre: nombre,
+    apellidos: apellidos,
+    rol: rol
+  };
+
+  return this.http.get<User[]>(urlEndpoint, { params });
+}
 }

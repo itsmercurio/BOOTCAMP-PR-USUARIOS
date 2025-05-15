@@ -97,7 +97,7 @@ export class UserFormComponent {
     return this.form.valid;
   }
 
-  // Getter para los controles de formulario
+
   get nombre() {
     return this.form.get('nombre');
   }

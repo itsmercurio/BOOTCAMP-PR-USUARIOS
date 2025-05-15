@@ -4,6 +4,9 @@ import com.user.BOOTCAMP_PR_USUARIOS.application.mapper.UsuarioMapper;
 import com.user.BOOTCAMP_PR_USUARIOS.domain.entity.Usuario;
 import com.user.BOOTCAMP_PR_USUARIOS.domain.persistence.UsuarioPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,4 +45,28 @@ public class UsuarioPersistenceImpl implements UsuarioPersistence {
         usuarioRepository.deleteById(idUsuario);
 
     }
+
+    @Override
+    public Page<Usuario> findUsuariosFiltrados(String nombre, String apellidos, String rol, Pageable pageable) {
+        Specification<Usuario> spec = Specification.where(null);
+
+        if (nombre != null && !nombre.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("nombre")), "%" + nombre.toLowerCase() + "%"));
+        }
+
+        if (apellidos != null && !apellidos.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("apellidos")), "%" + apellidos.toLowerCase() + "%"));
+        }
+
+        if (rol != null && !rol.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("rol")), "%" + rol.toLowerCase() + "%"));
+        }
+
+        return usuarioRepository.findAll(spec, pageable);
+    }
+
+
 }

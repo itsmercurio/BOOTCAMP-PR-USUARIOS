@@ -20,10 +20,18 @@ public class UsuarioRestController {
 
     @CrossOrigin
     @GetMapping(value = "/usuarios", produces = "application/json")
-    ResponseEntity<List<UsuarioDTO>>getAllUsuarios(){
-        List<UsuarioDTO> usuarios = usuarioService.getAllUsuarios();
-        return new ResponseEntity<>(usuarios, HttpStatus.OK);
+    public ResponseEntity<?> getAllUsuarios(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String apellidos,
+            @RequestParam(required = false) String rol,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        var usuariosPage = usuarioService.getUsuariosFiltrados(nombre, apellidos, rol, page, size);
+
+        return new ResponseEntity<>(usuariosPage, HttpStatus.OK);
     }
+
     @CrossOrigin
     @PostMapping(value = "/usuarios", produces = "application/json", consumes = "application/json")
     ResponseEntity<UsuarioDTO>insertUsuario(@RequestBody UsuarioDTO usuarioDTO){
@@ -54,4 +62,6 @@ public class UsuarioRestController {
         usuarioService.deleteUsuario(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
 }
