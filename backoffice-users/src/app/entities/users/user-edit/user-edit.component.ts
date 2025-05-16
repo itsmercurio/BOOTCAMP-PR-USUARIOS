@@ -24,14 +24,15 @@ export class UserEditComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.editForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/)]],
-      apellidos: ['', [Validators.required, Validators.minLength(2),Validators.pattern(/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/)]],
+      apellidos: ['', [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      rol: ['', Validators.required]
+      rol: ['', Validators.required],
+      version: [0]
     });
 
     this.userService.getRoles().subscribe({
@@ -55,17 +56,27 @@ export class UserEditComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.editForm.invalid) return;
+  if (this.editForm.invalid) return;
 
-    const userData: User = this.editForm.value;
-    this.userService.updateUser(this.userId, userData).subscribe({
-      next: () => {
-        alert('Usuario actualizado');
-        this.router.navigate(['/users']);
-      },
-      error: err => console.error('Error al actualizar el usuario', err)
-    });
-  }
+  const userData: User = this.editForm.value;
+  userData.id = this.userId;  // Asegúrate que el id esté presente
+
+  console.log('Datos que envío:', userData);
+
+  this.userService.updateUser(this.userId, userData).subscribe({
+    next: () => {
+      Swal.fire('Éxito', 'Usuario actualizado correctamente', 'success');
+      this.router.navigate(['/users']);
+    },
+    error: err => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al actualizar',
+        text: err.error.error || 'El usuario ha sido modificado por otro proceso. Recarga la página.'
+      });
+    }
+  });
+}
 
   cancelar(): void {
     Swal.fire({

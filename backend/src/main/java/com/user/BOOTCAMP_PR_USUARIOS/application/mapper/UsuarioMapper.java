@@ -3,15 +3,16 @@ package com.user.BOOTCAMP_PR_USUARIOS.application.mapper;
 import com.user.BOOTCAMP_PR_USUARIOS.application.dto.UsuarioDTO;
 import com.user.BOOTCAMP_PR_USUARIOS.domain.entity.Usuario;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper extends EntityMapper<UsuarioDTO, Usuario> {
 
-    default Usuario fromId(Long id){
-        if (id ==null) return null;
+    @Override
+    @Mapping(source = "version", target = "version")
+    UsuarioDTO toDto(Usuario entity);
 
-        Usuario usuario = new Usuario();
-        usuario.setId(id);
-        return usuario;
-    }
+    @Override
+    @Mapping(source = "version", target = "version")
+    Usuario toEntity(UsuarioDTO dto);
 }

@@ -7,6 +7,7 @@ public class UsuarioDTO {
     private String apellidos;
     private String email;
     private String rol;
+    private Integer version;
 
     public UsuarioDTO() {
     }
@@ -49,5 +50,13 @@ public class UsuarioDTO {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

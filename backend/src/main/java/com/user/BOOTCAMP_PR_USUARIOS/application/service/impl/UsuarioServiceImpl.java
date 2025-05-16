@@ -8,6 +8,7 @@ import com.user.BOOTCAMP_PR_USUARIOS.domain.persistence.UsuarioPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
@@ -83,7 +84,11 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new RuntimeException("Usuario no encontrado con ID: " + usuarioDTO.getId());
         }
 
-        Usuario updated = persistence.saveUsuario(mapper.toEntity(usuarioDTO));
-        return mapper.toDto(updated);
+        try {
+            Usuario updated = persistence.saveUsuario(mapper.toEntity(usuarioDTO));
+            return mapper.toDto(updated);
+        } catch (ObjectOptimisticLockingFailureException e) {
+            throw new RuntimeException("El usuario ha sido modificado por otro proceso. Vuelve a cargar los datos.");
+        }
     }
 }
